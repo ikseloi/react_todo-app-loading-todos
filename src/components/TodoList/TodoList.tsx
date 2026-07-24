@@ -8,10 +8,6 @@ type Props = {
   todos: Todo[];
 };
 
-// export const TodoList = ({ todos }: Props) => {
-//   return todos.map(todo => <TodoItem key={todo.id} todo={todo} />);
-// };
-
 export const TodoList = ({ todos }: Props) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">

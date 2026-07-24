@@ -6,7 +6,8 @@ import { USER_ID, getTodos } from './api/todos';
 import { todoFilterPredicates } from './utils/todoFilterPredicates';
 
 import { Todo } from './types/Todo';
-import { TodoFilterType } from './types/TodoFilterStatus';
+import { TodoFilterType } from './enums/TodoFilters';
+import { Errors } from './enums/Errors';
 
 import { UserWarning } from './UserWarning';
 import { Header } from './components/Header/Header';
@@ -34,7 +35,7 @@ export const App: React.FC = () => {
   const loadTodos = () => {
     getTodos()
       .then(addTodo)
-      .catch(() => setErrorMessage('Unable to load todos'));
+      .catch(() => setErrorMessage(Errors.Load));
   };
 
   useEffect(() => {
@@ -97,24 +98,6 @@ export const App: React.FC = () => {
         message={errorMessage}
         onCloseError={handleCloseErrorMessage}
       />
-      {/*  */}
-      {/* <div
-        data-cy="ErrorNotification"
-        className="notification is-danger is-light has-text-weight-normal"
-      > */}
-      {/* <button data-cy="HideErrorButton" type="button" className="delete" /> */}
-      {/* show only one message at a time */}
-      {/* Unable to load todos */}
-      {/* <br /> */}
-      {/* Title should not be empty */}
-      {/* <br /> */}
-      {/* Unable to add a todo */}
-      {/* <br /> */}
-      {/* Unable to delete a todo */}
-      {/* <br /> */}
-      {/* Unable to update a todo */}
-      {/* </div> */}
-      {/* ; */}
     </div>
   );
 };

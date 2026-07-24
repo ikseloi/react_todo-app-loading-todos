@@ -1,5 +1,5 @@
 import { Todo } from '../types/Todo';
-import { TodoFilterType } from '../types/TodoFilterStatus';
+import { TodoFilterType } from '../enums/TodoFilters';
 
 type TodoPredicate = (todo: Todo) => boolean;
 

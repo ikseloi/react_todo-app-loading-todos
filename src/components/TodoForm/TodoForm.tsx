@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRef, useState } from 'react';
+import { Errors } from '../../enums/Errors';
 
 import cn from 'classnames';
 
@@ -30,7 +31,7 @@ const TodoFormComponent = ({
     event.preventDefault();
 
     if (!title.trim()) {
-      onSetErrorMessage('Title should not be empty');
+      onSetErrorMessage(Errors.Title);
 
       return;
     }
