@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRef, useState } from 'react';
-import { Errors } from '../../enums/Errors';
+import { ErrorsEnum } from '../../enums/ErrorMessage';
 
 import cn from 'classnames';
 
@@ -31,7 +31,7 @@ const TodoFormComponent = ({
     event.preventDefault();
 
     if (!title.trim()) {
-      onSetErrorMessage(Errors.Title);
+      onSetErrorMessage(ErrorsEnum.Title);
 
       return;
     }

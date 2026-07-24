@@ -1,58 +1,43 @@
 import cn from 'classnames';
 
-import { TodoFilterType } from '../../enums/TodoFilters';
+import { TodoFilterEnum } from '../../enums/TodoFilter';
 
-const FILTER_OPTIONS = [
-  {
-    type: TodoFilterType.All,
-    label: 'All',
-    href: '#/',
-    dataCy: 'FilterLinkAll',
-  },
-  {
-    type: TodoFilterType.Active,
-    label: 'Active',
-    href: '#/active',
-    dataCy: 'FilterLinkActive',
-  },
-  {
-    type: TodoFilterType.Completed,
-    label: 'Completed',
-    href: '#/completed',
-    dataCy: 'FilterLinkCompleted',
-  },
-];
+const filterLabels: Record<TodoFilterEnum, string> = {
+  [TodoFilterEnum.All]: 'All',
+  [TodoFilterEnum.Active]: 'Active',
+  [TodoFilterEnum.Completed]: 'Completed',
+};
 
 type Props = {
-  todosFilter: TodoFilterType;
-  todosCount: number;
+  todoFilter: TodoFilterEnum;
+  leftItems: number;
   hasCompletedTodo: boolean;
-  onFilterChange: (filter: TodoFilterType) => void;
+  onFilterChange: (filter: TodoFilterEnum) => void;
 };
 
 export const TodoFilter = ({
-  todosFilter,
-  todosCount,
+  todoFilter,
+  leftItems,
   hasCompletedTodo,
   onFilterChange,
 }: Props) => {
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">
-        {`${todosCount} items left`}
+        {`${leftItems} ${leftItems === 1 ? 'item' : 'items'} left`}
       </span>
 
       {/* Active link should have the 'selected' class */}
       <nav className="filter" data-cy="Filter">
-        {FILTER_OPTIONS.map(({ type, label, href, dataCy }) => (
+        {Object.values(TodoFilterEnum).map(type => (
           <a
             key={type}
-            href={href}
-            className={cn('filter__link', type === todosFilter && 'selected')}
-            data-cy={dataCy}
+            href={type === TodoFilterEnum.All ? '#/' : `#/${type}`}
+            className={cn('filter__link', type === todoFilter && 'selected')}
+            data-cy={`FilterLink${filterLabels[type]}`}
             onClick={() => onFilterChange(type)}
           >
-            {label}
+            {filterLabels[type]}
           </a>
         ))}
       </nav>

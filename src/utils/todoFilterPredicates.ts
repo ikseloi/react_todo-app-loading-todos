@@ -1,12 +1,12 @@
 import { Todo } from '../types/Todo';
-import { TodoFilterType } from '../enums/TodoFilters';
+import { TodoFilterEnum } from '../enums/TodoFilter';
 
 type TodoPredicate = (todo: Todo) => boolean;
 
-export const todoFilterPredicates: Record<TodoFilterType, TodoPredicate> = {
-  [TodoFilterType.All]: () => true,
+export const todoFilterPredicates: Record<TodoFilterEnum, TodoPredicate> = {
+  [TodoFilterEnum.All]: () => true,
 
-  [TodoFilterType.Active]: todo => !todo.completed,
+  [TodoFilterEnum.Active]: todo => !todo.completed,
 
-  [TodoFilterType.Completed]: todo => todo.completed,
+  [TodoFilterEnum.Completed]: todo => todo.completed,
 };

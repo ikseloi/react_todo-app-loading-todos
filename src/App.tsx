@@ -6,20 +6,22 @@ import { USER_ID, getTodos } from './api/todos';
 import { todoFilterPredicates } from './utils/todoFilterPredicates';
 
 import { Todo } from './types/Todo';
-import { TodoFilterType } from './enums/TodoFilters';
-import { Errors } from './enums/Errors';
+import { TodoFilterEnum } from './enums/TodoFilter';
+import { ErrorsEnum } from './enums/ErrorMessage';
 
 import { UserWarning } from './UserWarning';
 import { Header } from './components/Header/Header';
 import { TodoForm } from './components/TodoForm/TodoForm';
 import { TodoList } from './components/TodoList/TodoList';
-import { TodoFilter } from './components/TodoFilter/Todofilter';
-import { ErrorMessage } from './components/ErrorMessage/ErrorMesage';
+import { TodoFilter } from './components/TodoFilter/TodoFilter';
+import { ErrorMessage } from './components/ErrorMessage/ErrorMessage';
+
+import { useAutoDismissError } from './hooks/useAutoDismissError';
 
 export const App: React.FC = () => {
   const [todos, addTodo] = useState<Todo[]>([]);
-  const [todosFilter, setTodosFilter] = useState<TodoFilterType>(
-    TodoFilterType.All,
+  const [todoFilter, setTodosFilter] = useState<TodoFilterEnum>(
+    TodoFilterEnum.All,
   );
 
   const [errorMessage, setErrorMessage] = useState('');
@@ -32,31 +34,17 @@ export const App: React.FC = () => {
   }, []);
   const handleCloseErrorMessage = useCallback(() => setErrorMessage(''), []);
 
-  const loadTodos = () => {
+  useEffect(() => {
     getTodos()
       .then(addTodo)
-      .catch(() => setErrorMessage(Errors.Load));
-  };
-
-  useEffect(() => {
-    loadTodos();
+      .catch(() => setErrorMessage(ErrorsEnum.Load));
   }, []);
 
-  useEffect(() => {
-    if (!errorMessage) {
-      return;
-    }
-
-    const timerId = setTimeout(() => {
-      setErrorMessage('');
-    }, 3000);
-
-    return () => clearTimeout(timerId);
-  }, [errorMessage]);
+  useAutoDismissError(errorMessage, handleCloseErrorMessage);
 
   const visibleTodos = useMemo(() => {
-    return todos.filter(todoFilterPredicates[todosFilter]);
-  }, [todos, todosFilter]);
+    return todos.filter(todoFilterPredicates[todoFilter]);
+  }, [todos, todoFilter]);
 
   if (!USER_ID) {
     return <UserWarning />;
@@ -85,8 +73,8 @@ export const App: React.FC = () => {
 
         {hasTodos && (
           <TodoFilter
-            todosFilter={todosFilter}
-            todosCount={leftItems}
+            todoFilter={todoFilter}
+            leftItems={leftItems}
             hasCompletedTodo={hasCompletedTodo}
             onFilterChange={setTodosFilter}
           />
